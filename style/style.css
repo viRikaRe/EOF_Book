@@ -1,7 +1,7 @@
 /*** Global ***/
 body{
   margin: 0;
-  color: #ccc;
+  color: #333;
   font-size: 7.5pt;
   font-family: sans-serif;
 }
@@ -32,6 +32,7 @@ body{
 
 /*** Container ***/
 #container{
+  display: none; /* Hide it until table rendered. */
   color: #eee;
   background: #313131;
   width: 100%;

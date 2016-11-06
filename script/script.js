@@ -1,6 +1,6 @@
 //Global variables
 /* global data:false, img_dir:false */
-var img_dir = "file:///C:/public/nr/moe/eof/data/img/";
+var img_dir = "img/";
 
 var id_hover = 0;
 var row_id = "row_0";
@@ -10,11 +10,18 @@ var tr;
 var filtered = false;
 
 //Page init
+
 document.addEventListener("DOMContentLoaded", function () {
+  $("#btn_load").prop("disabled", false);
+  $("#btn_load").html("Render");
+});
+
+$("#btn_load").click(function () {
+  $("#load").css("display", "none");
+  $("#container").css("display", "block");
   init_list();
   init_filters();
 });
-
 
 //Initialize card list
 function init_list() {
@@ -134,7 +141,7 @@ function init_filters() {
 }
 
 //Apply filters
-$("#f_filter").click(function () {
+$("#btn_filter").click(function () {
   sub_list = Array(data.length).fill(true);
 
   function filter(filterName = "", arrayName = "", arrayGroup = "", arrayIsNumber = "false") {
@@ -150,9 +157,9 @@ $("#f_filter").click(function () {
   }
 
   filter("chara", "chara", "x_card_data");
-  filter("element", "element_name","card_data");
-  filter("rarity", "rarity_name_short","card_data");
-  filter("cost", "cost","card_data");
+  filter("element", "element_name", "card_data");
+  filter("rarity", "rarity_name_short", "card_data");
+  filter("cost", "cost", "card_data");
 
   for (i = 0; i < data.length; i++) {
     row_id = "row_" + i;
@@ -167,7 +174,7 @@ $("#f_filter").click(function () {
 });
 
 //Clear filters
-$("#f_clear").click(function () {
+$("#btn_clear").click(function () {
   if (filtered) {
     for (i = 0; i < data.length; i++) {
       row_id = "row_" + i;

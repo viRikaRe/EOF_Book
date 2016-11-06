@@ -1,6 +1,7 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>EOF Showcase</title>
@@ -12,19 +13,23 @@
 </head>
 
 <body>
+  <div id="load">
+    <h1>Chrome recommended.</h1>
+    <h2>Firefox may crash.</h2>
+    <button type="button" id="btn_load" disabled>Loading data...</button>
+  </div>
   <div id="showcase">
     <img id="card_img" />
     <div id="card_desc"></div>
   </div>
-  
   <div id="container">
     <div id="filter">
       <select name="f_chara" id="f_chara"></select>
       <select name="f_element" id="f_element"></select>
       <select name="f_rarity" id="f_rarity"></select>
       <select name="f_cost" id="f_cost"></select>
-      <button type="button" id="f_filter">Filter</button>
-      <button type="button" id="f_clear">Clear</button>
+      <button type="button" id="btn_filter">Filter</button>
+      <button type="button" id="btn_clear">Clear</button>
     </div>
     <div id="list">
       <table id="card_list">
@@ -37,4 +42,5 @@
 
   <script src="script/script.js"></script>
 </body>
+
 </html>
