@@ -23,6 +23,7 @@ $("#btn_load").click(function () {
   init_filters();
 });
 
+
 //Initialize card list
 function init_list() {
   //Add table head
