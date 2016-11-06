@@ -1,0 +1,40 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>EOF Showcase</title>
+  <meta name="description" content="NA">
+  <meta name="author" content="NA">
+  <link rel="stylesheet" href="style/style.css">
+  <script src="script/jquery-3.1.1.js"></script>
+  <script src="script/data.js"></script>
+</head>
+
+<body>
+  <div id="showcase">
+    <img id="card_img" />
+    <div id="card_desc"></div>
+  </div>
+  
+  <div id="container">
+    <div id="filter">
+      <select name="f_chara" id="f_chara"></select>
+      <select name="f_element" id="f_element"></select>
+      <select name="f_rarity" id="f_rarity"></select>
+      <select name="f_cost" id="f_cost"></select>
+      <button type="button" id="f_filter">Filter</button>
+      <button type="button" id="f_clear">Clear</button>
+    </div>
+    <div id="list">
+      <table id="card_list">
+        <thead id="head_area"></thead>
+        <tbody id="body_area"></tbody>
+        <tfoot id="foot_area"></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <script src="script/script.js"></script>
+</body>
+</html>
