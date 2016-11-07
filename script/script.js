@@ -1,188 +1,99 @@
 //Global variables
 /* global data:false, img_dir:false */
+
 var img_dir = "img/";
-
 var id_hover = 0;
-var row_id = "row_0";
-var sub_list = [];
-var i = 0;
-var tr;
-var filtered = false;
 
-//Page init
+var i;
+var card = {
+  recid: 0,
+  name: "",
+  element_name: "",
+  rarity_name_short: "",
+  attack: 0,
+  attack_max: 0,
+  defence: 0,
+  defence_max: 0,
+  cost: 0,
+  skill_name: "",
+  skill_desc: "",
+};
 
-document.addEventListener("DOMContentLoaded", function () {
-  $("#btn_load").prop("disabled", false);
-  $("#btn_load").html("Render");
-});
+var data_grid = new Array(data.length);
+for (i = 0; i < data_grid.length; i++) {
+  var record = Object.create(card);
+  record.recid = i;
+  record.card_no = data[i]["x_card_data"]["raw_order_int"];
+  record.name = data[i]["card_data"]["name"];
+  record.element_name = data[i]["card_data"]["element_name"];
+  record.rarity_name_short = data[i]["card_data"]["rarity_name_short"];
+  record.attack = data[i]["card_data"]["attack"];
+  record.attack_max = data[i]["card_data"]["attack_max"];
+  record.defence = data[i]["card_data"]["defence"];
+  record.defence_max = data[i]["card_data"]["defence_max"];
+  record.cost = data[i]["card_data"]["cost"];
+  record.skill_name = data[i]["card_data"]["skill_name"];
+  record.skill_desc = data[i]["card_data"]["skill_desc"];
+  data_grid[i] = record;
+}
+//console.log(data_grid);
 
-$("#btn_load").click(function () {
-  $("#load").css("display", "none");
-  $("#container").css("display", "block");
-  init_list();
-  init_filters();
-});
-
-
-//Initialize card list
-function init_list() {
-  //Add table head
-  tr = $("<tr/>").addClass("head_row");
-  tr.append(
-    $("<th/>").text("番号").addClass("raw_order_str"),
-    $("<th/>").text("名前").addClass("name"),
-    $("<th/>").text("属性").addClass("element_name"),
-    $("<th/>").text("稀有").addClass("rarity_name_short"),
-    $("<th/>").text("攻初").addClass("attack"),
-    $("<th/>").text("攻最").addClass("attack_max"),
-    $("<th/>").text("防初").addClass("defence"),
-    $("<th/>").text("防最").addClass("defence_max"),
-    $("<th/>").text("戦力").addClass("cost"),
-    $("<th/>").text("技能").addClass("skill_name"),
-    $("<th/>").text("効果").addClass("skill_desc")
-  );
-  $("#head_area").append(tr);
-
-  //Add table body
-  for (i = 0; i < data.length; i++) {
-    row_id = "row_" + i;
-    tr = $("<tr/>").addClass("card_row").attr("id", row_id);
-
-    var td01 = $("<td/>").addClass("card_attr").addClass("raw_order_str").text(data[i]["x_card_data"]["raw_order_str"]);
-    var td02 = $("<td/>").addClass("card_attr").addClass("name").text(data[i]["card_data"]["name"]);
-    var td03 = $("<td/>").addClass("card_attr").addClass("element_name").addClass(data[i]["element_name"]).text(data[i]["card_data"]["element_name"]);
-    var td04 = $("<td/>").addClass("card_attr").addClass("rarity_name_short").text(data[i]["card_data"]["rarity_name_short"]);
-    var td05 = $("<td/>").addClass("card_attr").addClass("attack").text(data[i]["card_data"]["attack"]);
-    var td06 = $("<td/>").addClass("card_attr").addClass("attack_max").text(data[i]["card_data"]["attack_max"]);
-    var td07 = $("<td/>").addClass("card_attr").addClass("defence").text(data[i]["card_data"]["defence"]);
-    var td08 = $("<td/>").addClass("card_attr").addClass("defence_max").text(data[i]["card_data"]["defence_max"]);
-    var td09 = $("<td/>").addClass("card_attr").addClass("cost").text(data[i]["card_data"]["cost"]);
-    var td10 = $("<td/>").addClass("card_attr").addClass("skill_name").text(data[i]["card_data"]["skill_name"]);
-    var td11 = $("<td/>").addClass("card_attr").addClass("skill_desc").text(data[i]["card_data"]["skill_desc"]);
-    tr.append(td01, td02, td03, td04, td05, td06, td07, td08, td09, td10, td11);
-
-    $("#body_area").append(tr);
-  }
-
-  //When a card row hovered, display image and description
-  $("tr.card_row").hover(
-    function () {
-      id_hover = $(this).attr("id").substr(4);
-      $("#card_img").attr("src", img_dir + data[id_hover]["x_card_data"]["img_file_name_no_ext"] + ".jpg");
-      $("#card_desc").text(data[id_hover]["card_data"]["desc"]);
-      $("#showcase").addClass(data[id_hover]["card_data"]["element_name"]);
-      $("#showcase").css("display", "block");
+$("#grid").w2grid({
+  name: "grid",
+  header: "List of Names",
+  show: {
+    toolbar: true,
+    footer: true
+  },
+  columns: [
+    { field: "card_no", caption: "番号", size: "3%", min: 30, sortable: true },
+    { field: "name", caption: "名前", size: "23%", min: 230, sortable: true, resizable: true },
+    { field: "element_name", caption: "属性", size: "3%", min: 30, sortable: true, resizable: true },
+    { field: "rarity_name_short", caption: "稀有", size: "3%", min: 30, resizable: true },
+    { field: "attack", caption: "攻初", size: "4%", min: 40, resizable: true },
+    { field: "attack_max", caption: "攻最", size: "4%", min: 40, resizable: true },
+    { field: "defence", caption: "防初", size: "4%", min: 40, resizable: true },
+    { field: "defence_max", caption: "防最", size: "4%", min: 40, resizable: true },
+    { field: "cost", caption: "戦力", size: "3%", min: 30, resizable: true },
+    { field: "skill_name", caption: "技能", size: "21%", min: 210, resizable: true },
+    { field: "skill_desc", caption: "効果", size: "28%", min: 280, resizable: true },
+  ],
+  searches: [
+    { field: "card_no", caption: "番号", type: "int" },
+    { field: "name", caption: "名前", type: "text" },
+    {
+      field: "element_name", caption: "属性", type: "list",
+      options: { items: ["人", "神", "魔"] }
     },
-    function () {
-      $("#showcase").css("display", "none");
-      $("#showcase").removeClass(data[id_hover]["card_data"]["element_name"]);
-    }
-  );
-
-  //When a card row clicked, show only related cards
-  $(".card_row").click(function () {
-    var selected_id = $(this).attr("id").substr(4);
-    var selected_real_order = data[selected_id]["x_card_data"]["real_order"];
-
-    sub_list = Array(data.length).fill(false);
-    for (i = 0; i < data.length; i++) {
-      if (data[i]["x_card_data"]["real_order"] === selected_real_order) sub_list[i] = true;
-    }
-
-    for (i = 0; i < data.length; i++) {
-      row_id = "row_" + i;
-      if (sub_list[i]) {
-        $("#" + row_id).removeClass("filtered_out");
-      } else {
-        $("#" + row_id).addClass("filtered_out");
-      }
-    }
-
-    filtered = true;
-  });
-}
-
-//Initialize filters
-function init_filters() {
-  //charas
-  var charas = [];
-  $.each(data, function (i, v) {
-    if ($.inArray(v["x_card_data"]["chara"], charas) === -1) charas.push(v["x_card_data"]["chara"]);
-  });
-  charas.sort(function (a, b) { return a.localeCompare(b); });
-  $("#f_chara").append($("<option/>").attr("value", "").text("角色"));
-  for (i = 0; i < charas.length; i++) {
-    $("#f_chara").append($("<option/>").attr("value", charas[i]).text(charas[i]));
-  }
-
-  //elements
-  var elems = ["人", "神", "魔"];
-  $("#f_element").append($("<option/>").attr("value", "").text("属性"));
-  for (i = 0; i < elems.length; i++) {
-    $("#f_element").append($("<option/>").attr("value", elems[i]).text(elems[i]));
-  }
-
-  //rarities
-  var rarities = ["N", "HN", "R", "HR", "SR", "SSR", "LG", "SLG", "AR"];
-  $("#f_rarity").append($("<option/>").attr("value", "").text("稀有"));
-  for (i = 0; i < rarities.length; i++) {
-    $("#f_rarity").append($("<option/>").attr("value", rarities[i]).text(rarities[i]));
-  }
-
-  //costs
-  var costs = [];
-  $.each(data, function (i, v) {
-    if ($.inArray(v["card_data"]["cost"], costs) === -1) costs.push(v["card_data"]["cost"]);
-  });
-  costs.sort(function (a, b) { return a - b; });
-  $("#f_cost").append($("<option/>").attr("value", "").text("戦力"));
-  for (i = 0; i < costs.length; i++) {
-    $("#f_cost").append($("<option/>").attr("value", costs[i]).text(costs[i]));
-  }
-}
-
-//Apply filters
-$("#btn_filter").click(function () {
-  sub_list = Array(data.length).fill(true);
-
-  function filter(filterName = "", arrayName = "", arrayGroup = "", arrayIsNumber = "false") {
-    if ($("#f_" + filterName).val() !== "") {
-      for (i = 0; i < data.length; i++) {
-        sub_list[i] = sub_list[i] &&
-          (arrayIsNumber ?
-            data[i][arrayGroup][arrayName] == $("#f_" + filterName).val() :
-            data[i][arrayGroup][arrayName] === $("#f_" + filterName).val()
-          );
-      }
-    }
-  }
-
-  filter("chara", "chara", "x_card_data");
-  filter("element", "element_name", "card_data");
-  filter("rarity", "rarity_name_short", "card_data");
-  filter("cost", "cost", "card_data");
-
-  for (i = 0; i < data.length; i++) {
-    row_id = "row_" + i;
-    if (sub_list[i]) {
-      $("#" + row_id).removeClass("filtered_out");
-    } else {
-      $("#" + row_id).addClass("filtered_out");
-    }
-  }
-
-  filtered = true;
+    {
+      field: "rarity_name_short", caption: "稀有", type: "list",
+      options: { items: ["N", "HN", "R", "HR", "SR", "SSR", "LG", "SLG", "AR"] }
+    },
+    { field: "attack", caption: "攻初", type: "int" },
+    { field: "attack_max", caption: "攻最", type: "int" },
+    { field: "defence", caption: "防初", type: "int" },
+    { field: "defence_max", caption: "防最", type: "int" },
+    { field: "cost", caption: "戦力", type: "int" },
+    { field: "skill_name", caption: "技能", type: "text" },
+    { field: "skill_desc", caption: "効果", type: "text" },
+  ],
+  sortData: [{ field: "card_no", direction: "ASC" }],
+  records: data_grid,
+  onSelect: function (event) {
+    show_case(event.recid);
+  },
+  onUnselect: function (event) {
+    hide_case(event.recid);
+  },
 });
 
-//Clear filters
-$("#btn_clear").click(function () {
-  if (filtered) {
-    for (i = 0; i < data.length; i++) {
-      row_id = "row_" + i;
-      $("#" + row_id).removeClass("filtered_out");
-    }
-  }
-
-  filtered = false;
-});
-
+function show_case(recid) {
+  $("#card_img").attr("src", img_dir + data[recid]["x_card_data"]["img_file_name_no_ext"] + ".jpg");
+  $("#card_desc").text(data[recid]["card_data"]["desc"]);
+  $("#showcase").addClass(data[recid]["card_data"]["element_name"]);
+  $("#showcase").css("display", "block");
+}
+function hide_case(recid) {
+  $("#showcase").css("display", "none");
+  $("#showcase").removeClass(data[recid]["card_data"]["element_name"]);
+}
