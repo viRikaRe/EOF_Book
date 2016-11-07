@@ -8,7 +8,10 @@
     "rules": {
         "indent": [
             "error",
-            2
+            2,
+            {
+                "SwitchCase": 1
+            }
         ],
         "linebreak-style": [
             "error",
@@ -22,6 +25,12 @@
             "error",
             "always"
         ],
-        "no-unused-vars": [1, {"vars": "all", "args": "after-used"}]
+        "no-unused-vars": [
+            1,
+            {
+                "vars": "all",
+                "args": "after-used"
+            }
+        ]
     }
 }

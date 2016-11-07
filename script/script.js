@@ -1,8 +1,8 @@
 //Global variables
-/* global data:false, img_dir:false */
+/* global data:false */
 
 var img_dir = "img/";
-var id_hover = 0;
+var img_name_style = { path: "x_card_data", style: "img_file_name_no_ext" };
 
 var i;
 var card = {
@@ -44,6 +44,35 @@ $("#grid").w2grid({
   show: {
     toolbar: true,
     footer: true
+  },
+  toolbar: {
+    items: [
+      { type: "break" },
+      {
+        type: "html",
+        html: "<div>" +
+        "img_dir: " +
+        "<input id=\"img_dir\" size=\"15\" placeholder=\"img\"/>" +
+        "/</div>"
+      },
+      { type: "button", id: "btn_img_dir", caption: "Set" }
+    ],
+    onClick: function (event) {
+      switch (event.target) {
+        case "btn_img_dir":
+          img_dir = $("#img_dir").val()+"/";
+          $("#img_dir").attr("placeholder", img_dir.substr(0,img_dir.length-1));
+          $("#img_dir").val("");
+          break;
+      }
+    },
+    onRefresh: function (event) {
+      switch (event.target) {
+        case "btn_img_dir":
+          $("#img_dir").attr("placeholder", img_dir.substr(0,img_dir.length-1));
+          break;
+      }
+    }
   },
   columns: [
     { field: "card_no", caption: "番号", size: "3%", min: 30, sortable: true },
@@ -87,8 +116,9 @@ $("#grid").w2grid({
   },
 });
 
+
 function show_case(recid) {
-  $("#card_img").attr("src", img_dir + data[recid]["x_card_data"]["img_file_name_no_ext"] + ".jpg");
+  $("#card_img").attr("src", img_dir + data[recid][img_name_style.path][img_name_style.style] + ".jpg");
   $("#card_desc").text(data[recid]["card_data"]["desc"]);
   $("#showcase").addClass(data[recid]["card_data"]["element_name"]);
   $("#showcase").css("display", "block");
