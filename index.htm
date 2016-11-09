@@ -7,40 +7,23 @@
   <title>EOF Showcase</title>
   <meta name="description" content="NA">
   <meta name="author" content="NA">
+  <link rel="stylesheet" href="style/w2ui-1.5.rc1.css">
   <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="style/font-awesome.css">
   <script src="script/jquery-3.1.1.js"></script>
+  <script src="script/w2ui-1.5.rc1.js"></script>
 </head>
 
 <body>
-  <div id="load">
-    <h1>Chrome recommended.</h1>
-    <h2>Firefox may crash.</h2>
-    <button type="button" id="btn_load" disabled>Loading data...(~10MB)</button>
-  </div>
   <div id="showcase">
-    <img id="card_img" />
+    <img id="card_img" src="" alt="Card Image">
     <div id="card_desc"></div>
   </div>
   <div id="container">
-    <div id="filter">
-      <select name="f_chara" id="f_chara"></select>
-      <select name="f_element" id="f_element"></select>
-      <select name="f_rarity" id="f_rarity"></select>
-      <select name="f_cost" id="f_cost"></select>
-      <button type="button" id="btn_filter">Filter</button>
-      <button type="button" id="btn_clear">Clear</button>
-    </div>
-    <div id="list">
-      <table id="card_list">
-        <thead id="head_area"></thead>
-        <tbody id="body_area"></tbody>
-        <tfoot id="foot_area"></tfoot>
-      </table>
-    </div>
+    <div id="grid"></div>
+    <script src="script/data.js"></script>
+    <script src="script/script.js"></script>
   </div>
-
-  <script src="script/data.js"></script>
-  <script src="script/script.js"></script>
 </body>
 
 </html>
