@@ -1,4 +1,4 @@
-/*** Global ***/
+﻿/*** Global ***/
 
 body{
   margin: 0;
@@ -16,7 +16,7 @@ body{
 
 /*** Showcase ***/
 #showcase{
-  display: block;
+  display: none;
   position: fixed;
   z-index:99;
   top: 0;
