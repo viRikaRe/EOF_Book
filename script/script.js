@@ -1,8 +1,8 @@
 //Global variables
-/* global data:false, w2ui:false */
+/* global data:false, w2ui:false, img_dir:true */
 
 var img_dir = "img";
-var img_name_style = { path: "x_card_data", style: "img_file_name_no_ext" }; //or you can change to style:"name"
+var img_name_style = { path: "x_card_data", style: "img_file_name_no_ext" }; //or you can change to {path:"card_data",style:"name"}
 
 var i;
 var saved_sel = -1;
@@ -38,8 +38,15 @@ for (i = 0; i < grid_data.length; i++) {
   record.skill_name = data[i]["card_data"]["skill_name"];
   record.skill_desc = data[i]["card_data"]["skill_desc"];
   record.real_order = data[i]["x_card_data"]["real_order"]; //hidden
+  record.chara = data[i]["x_card_data"]["chara"]; //hidden
   grid_data[i] = record;
 }
+
+var charas = [];
+$.each(data, function (i, v) {
+  if ($.inArray(v["x_card_data"]["chara"], charas) === -1) charas.push(v["x_card_data"]["chara"]);
+});
+charas.sort(function (a, b) { return a.localeCompare(b); });
 
 $("#grid").w2grid({
   name: "grid",
@@ -95,7 +102,7 @@ $("#grid").w2grid({
               //Hide showcase
               hide_case();
               //Reset search
-              w2ui["grid"].search(saved_search_data);
+              if (saved_search_data.length != 0) { w2ui["grid"].search(saved_search_data); } else { w2ui["grid"].searchReset(); }
               //Recover status
               if (saved_sel >= 0) {
                 w2ui["grid"].select(saved_sel);
@@ -138,6 +145,7 @@ $("#grid").w2grid({
     { field: "cost", caption: "戦力", type: "int" },
     { field: "skill_name", caption: "技能", type: "text" },
     { field: "skill_desc", caption: "効果", type: "text" },
+    { field: "chara", caption: "角色", type: "list", options: { items: charas } }
   ],
   sortData: [{ field: "card_no", direction: "ASC" }],
   records: grid_data,
@@ -169,3 +177,4 @@ function hide_case() {
   $("#card_img").attr("src", null);
   $("#card_desc").text("");
 }
+
