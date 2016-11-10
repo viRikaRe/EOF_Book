@@ -18,9 +18,11 @@ body{
 #showcase{
   display: none;
   position: fixed;
-  z-index:99;
+  z-index:9;
   top: 0;
   right: 0;
+  width: 60vmin;
+  max-width: 320px;
   color: #ccc;
   background:#313131;
 }
@@ -29,11 +31,49 @@ body{
 #showcase.魔{background:#310000;}
 
 #card_img{
-  width: 320px;
-  height: 400px;
+  width: 100%;
   clear: both;
 }
 #card_desc{
-  width: 320px;
-  font-size: 12pt;
+  width: 100%;
+  font-size: 11pt;
+}
+
+/* Grid */
+/* Toolbar */
+.w2ui-grid .w2ui-toolbar-custom-imgdir >span {
+  pointer-events: none;
+  position: absolute;
+  padding: 3px;
+  color: #8d99a7;
+}
+.w2ui-grid .w2ui-toolbar-custom-imgdir >span.textbox-icon {
+  margin: 5px 4px 0 10px;
+}
+.w2ui-grid .w2ui-toolbar-custom-imgdir >span.textbox-suffix {
+  margin: 4px 0 0 -12px;
+}
+
+.w2ui-grid .w2ui-toolbar-custom-imgdir input[type=text] {
+  outline: none !important;
+  border-radius: 3px !important;
+  line-height: normal !important;
+  height: 23px !important;
+  border: 1px solid #b9b9b9 !important;
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  padding: 3px 8px 3px 20px !important;
+  margin: 0 0 0 6px !important;
+  margin-top: 1px !important;
+}
+
+/* Records */
+.w2ui-grid .w2ui-grid-records .w2ui-grid-data >div[title=人] {
+  color: #6496ea;
+}
+.w2ui-grid .w2ui-grid-records .w2ui-grid-data >div[title=神] {
+  color: #96ea64;
+}
+.w2ui-grid .w2ui-grid-records .w2ui-grid-data >div[title=魔] {
+  color: #ea6496;
 }
