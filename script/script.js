@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initData();
   w2ui["grid"].add(grid_data);
   w2ui["grid"].sortData.push({ field: "card_no", direction: "asc" });
+  w2ui["grid"].getSearch("chara").options.items = charas;
   w2ui["grid"].refresh();
   addListeners();
   w2ui["grid"].unlock();
@@ -182,10 +183,10 @@ function initGrid() {
       { field: "cost", caption: "戦力", type: "int" },
       { field: "skill_name", caption: "技能", type: "text" },
       { field: "skill_desc", caption: "効果", type: "text" },
-      { field: "chara", caption: "角色", type: "list", options: { items: charas } }
+      { field: "chara", caption: "角色", type: "list", options: { items: [/* to fill */] } }
     ],
-    sortData: [],
-    records: [],
+    sortData: [/* to fill */],
+    records: [/* to fill */],
     onSelect: function (event) {
       if (pref_display_case) showCase(event.recid);
       event.onComplete = function () {
