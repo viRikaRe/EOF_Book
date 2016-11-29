@@ -153,7 +153,7 @@ function initGrid() {
       }
     },
     columns: [
-      { field: "card_no", caption: "番号", size: "3%", min: 30, sortable: true },
+      { field: "card_no", caption: "番号", size: "4%", min: 40, sortable: true },
       { field: "name", caption: "名前", size: "23%", min: 230, sortable: true, resizable: true },
       { field: "element_name", caption: "属性", size: "3%", min: 30, sortable: true, resizable: true },
       { field: "rarity_name_short", caption: "稀有", size: "3%", min: 30, sortable: true, resizable: true },
@@ -163,7 +163,7 @@ function initGrid() {
       { field: "defence_max", caption: "防最", size: "4%", min: 40, sortable: true, resizable: true },
       { field: "cost", caption: "戦力", size: "3%", min: 30, sortable: true, resizable: true },
       { field: "skill_name", caption: "技能", size: "21%", min: 210, sortable: true, resizable: true },
-      { field: "skill_desc", caption: "効果", size: "28%", min: 280, sortable: true, resizable: true },
+      { field: "skill_desc", caption: "効果", size: "27%", min: 270, sortable: true, resizable: true },
     ],
     searches: [
       { field: "card_no", caption: "番号", type: "int" },
