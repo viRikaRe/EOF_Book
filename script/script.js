@@ -1,33 +1,19 @@
 //Global variables
 /* global data:false, w2ui:false, img_dir:true */
 
-var img_dir = "img";
-var img_name_style = { path: "x_card_data", style: "img_file_name_no_ext" }; //or you can change to {path:"card_data",style:"name"}
-var pref_display_case = true;
-var case_shown = false;
+const grid_data = [];
+const charas = [];
 
-var grid_data = [];
-var charas = [];
+let img_dir = "img";
+const img_name_style = { path: "x_card_data", style: "img_file_name_no_ext" }; //or you can change to {path:"card_data",style:"name"}
 
-var i;
-var saved_sel = -1;
-var saved_search_data = {};
-var saved_search_logic = "";
-var mask_custom_search = false;
+let pref_show_case = true;      //boolean - whether "Show pic" button is selected
+let case_shown = false;         //boolean - whether pic is shown
+let saved_sel = -1;             //integer - remembers selected row before searching, so as to keep it selected after searching
+let saved_search_data = {};     //object - remembers search settings before customized searching, so as to keep restore it afterwards
+let saved_search_logic = "";    //string - remembers search logic  before customized searching, so as to keep restore it afterwards
+let mask_custom_search = false; //boolean - a flag indicating whether a search is initiated from default search or customized search
 
-var card = {
-  recid: 0,
-  name: "",
-  element_name: "",
-  rarity_name_short: "",
-  attack: 0,
-  attack_max: 0,
-  defence: 0,
-  defence_max: 0,
-  cost: 0,
-  skill_name: "",
-  skill_desc: "",
-};
 
 //Page load
 initGrid();
@@ -44,10 +30,11 @@ document.addEventListener("DOMContentLoaded", function () {
   w2ui["grid"].unlock();
 });
 
+
 function initData() {
-  grid_data = new Array(data.length);
-  for (i = 0; i < grid_data.length; i++) {
-    var record = Object.create(card);
+  //init data for grid
+  for (let i = 0; i < data.length; i++) {
+    const record = {};
     record.recid = i;
     record.card_no = data[i]["x_card_data"]["raw_order_int"];
     record.name = data[i]["card_data"]["name"];
@@ -62,10 +49,10 @@ function initData() {
     record.skill_desc = data[i]["card_data"]["skill_desc"];
     record.real_order = data[i]["x_card_data"]["real_order"]; //hidden
     record.chara = data[i]["x_card_data"]["chara"]; //hidden
-    grid_data[i] = record;
+    grid_data.push(record);
   }
 
-  charas = [];
+  //init data for charas search
   $.each(data, function (i, v) {
     if ($.inArray(v["x_card_data"]["chara"], charas) === -1) charas.push(v["x_card_data"]["chara"]);
   });
@@ -93,40 +80,42 @@ function initGrid() {
         },
         { type: "button", id: "btn_img_dir", caption: "Set" },
         { type: "break" },
-        { type: "check", id: "chk_show_evolve", caption: "Show evolve", icon: "fa fa-toggle-off", checked: false, disabled: true },
+        { type: "check", id: "chk_show_promo", caption: "Show promotion", icon: "fa fa-toggle-off", checked: false, disabled: true },
         { type: "spacer" }
       ],
       onClick: function (event) {
         event.onComplete = function () {
           switch (event.target) {
-            case "chk_show_case":
+            case "chk_show_case":   //"Show pic" button is clicked
               if (this.get("chk_show_case").checked) {
                 this.set("chk_show_case", { icon: "fa fa-toggle-on" });
-                pref_display_case = true;
+                pref_show_case = true;
                 if (w2ui["grid"].getSelection().length > 0) showCase(w2ui["grid"].getSelection()[0]);
               } else {
                 this.set("chk_show_case", { icon: "fa fa-toggle-off" });
-                pref_display_case = false;
+                pref_show_case = false;
                 hideCase();
               }
               break;
-            case "btn_img_dir":
+
+            case "btn_img_dir":     //"Set" button is clicked
               img_dir = $.trim($("#txt_img_dir").val()).length > 0 ? $("#txt_img_dir").val() : "img";
               $("#txt_img_dir").attr("placeholder", img_dir);
-              $("#txt_img_dir").val("");
               $("#txt_img_dir").attr("size", Math.min(30, img_dir.length));
+              $("#txt_img_dir").val("");
               break;
-            case "chk_show_evolve":
-              if (this.get("chk_show_evolve").checked) {
+
+            case "chk_show_promo":  //"Show promotion" button is clicked
+              if (this.get("chk_show_promo").checked) {
                 //Change button icon
-                this.set("chk_show_evolve", { icon: "fa fa-toggle-on" });
+                this.set("chk_show_promo", { icon: "fa fa-toggle-on" });
                 //Save status
                 saved_sel = w2ui["grid"].getSelection()[0];
                 saved_search_data = w2ui["grid"].searchData;
                 saved_search_logic = w2ui["grid"].last.logic;
                 //Search real order
                 mask_custom_search = true;
-                var sel_ro = w2ui["grid"].get(saved_sel).real_order;
+                const sel_ro = w2ui["grid"].get(saved_sel).real_order;
                 w2ui["grid"].search([{ field: "real_order", value: sel_ro, operator: "is" }]);
                 mask_custom_search = false;
                 //Recover status
@@ -136,10 +125,10 @@ function initGrid() {
                 }
               } else {
                 //Change button icon
-                this.set("chk_show_evolve", { icon: "fa fa-toggle-off" });
+                this.set("chk_show_promo", { icon: "fa fa-toggle-off" });
                 //Reset search
                 mask_custom_search = true;
-                if (saved_search_data.length != 0) { w2ui["grid"].search(saved_search_data, saved_search_logic); } else { w2ui["grid"].searchReset(); }
+                if (saved_search_data.length !== 0) { w2ui["grid"].search(saved_search_data, saved_search_logic); } else { w2ui["grid"].searchReset(); }
                 mask_custom_search = false;
                 //Recover status
                 if (saved_sel >= 0) {
@@ -188,25 +177,25 @@ function initGrid() {
     sortData: [/* to fill */],
     records: [/* to fill */],
     onSelect: function (event) {
-      if (pref_display_case) showCase(event.recid);
+      if (pref_show_case) showCase(event.recid);
       event.onComplete = function () {
         saved_sel = w2ui["grid"].getSelection()[0];
-        if (!w2ui["grid"].toolbar.get("chk_show_evolve").checked) w2ui["grid"].toolbar.enable("chk_show_evolve");
+        if (!w2ui["grid"].toolbar.get("chk_show_promo").checked) w2ui["grid"].toolbar.enable("chk_show_promo");
       };
     },
     onUnselect: function (event) {
       hideCase();
       event.onComplete = function () {
         saved_sel = -1;
-        if (!w2ui["grid"].toolbar.get("chk_show_evolve").checked) w2ui["grid"].toolbar.disable("chk_show_evolve");
+        if (!w2ui["grid"].toolbar.get("chk_show_promo").checked) w2ui["grid"].toolbar.disable("chk_show_promo");
       };
     },
     onSearch: function (event) {
       event.onComplete = function () {
         if (!mask_custom_search) {
-          w2ui["grid"].toolbar.disable("chk_show_evolve");
-          w2ui["grid"].toolbar.uncheck("chk_show_evolve");
-          w2ui["grid"].toolbar.set("chk_show_evolve", { icon: "fa fa-toggle-off" });
+          w2ui["grid"].toolbar.disable("chk_show_promo");
+          w2ui["grid"].toolbar.uncheck("chk_show_promo");
+          w2ui["grid"].toolbar.set("chk_show_promo", { icon: "fa fa-toggle-off" });
           w2ui["grid"].selectNone();
         }
       };
@@ -216,7 +205,7 @@ function initGrid() {
 
 function addListeners() {
   $("#txt_img_dir").keypress(function (event) {
-    if (event.which == 13) { w2ui["grid"].toolbar.click("btn_img_dir"); }
+    if (event.which === 13) { w2ui["grid"].toolbar.click("btn_img_dir"); }
   });
 }
 
