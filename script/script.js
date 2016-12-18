@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initData();
   w2ui["grid"].add(grid_data);
   w2ui["grid"].sortData.push({ field: "card_no", direction: "asc" });
+  w2ui["grid"].localSort();
   w2ui["grid"].getSearch("chara").options.items = charas;
   w2ui["grid"].refresh();
   addListeners();
@@ -163,7 +164,7 @@ function initGrid() {
       },
       {
         field: "rarity_name_short", caption: "稀有", type: "list",
-        options: { items: ["N", "HN", "R", "HR", "SR", "SSR", "LG", "SLG", "AR"] }
+        options: { items: ["N", "HN", "R", "HR", "SR", "SSR", "LG", "SLG", "SSLG", "AR"] }
       },
       { field: "attack", caption: "攻初", type: "int" },
       { field: "attack_max", caption: "攻最", type: "int" },
