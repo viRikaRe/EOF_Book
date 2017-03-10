@@ -4,7 +4,8 @@
 const grid_data = [];
 const charas = [];
 
-let img_dir = "img";
+const img_dir_default = "img/card";
+let img_dir = img_dir_default;
 const img_name_style = { path: "x_card_data", style: "img_file_name_no_ext" }; //or you can change to {path:"card_data",style:"name"}
 
 let pref_show_case = true;      //boolean - whether "Show pic" button is selected
@@ -76,7 +77,7 @@ function initGrid() {
           type: "html",
           html: "<div class=\"w2ui-toolbar-custom-imgdir\">" +
           "<span class=\"textbox-icon fa fa-folder-open-o fa-fw\"></span>" +
-          "<input id=\"txt_img_dir\" type=\"text\" title=\"Set image directory\" size=\"3\" placeholder=\"" + img_dir + "\"/>" +
+          "<input id=\"txt_img_dir\" type=\"text\" title=\"Set image directory\" size=\"9\" placeholder=\"" + img_dir + "\"/>" +
           "<span class=\"textbox-suffix\">/</span></div>"
         },
         { type: "button", id: "btn_img_dir", caption: "Set" },
@@ -100,7 +101,7 @@ function initGrid() {
               break;
 
             case "btn_img_dir":     //"Set" button is clicked
-              img_dir = $.trim($("#txt_img_dir").val()).length > 0 ? $("#txt_img_dir").val() : "img";
+              img_dir = $.trim($("#txt_img_dir").val()).length > 0 ? $("#txt_img_dir").val() : img_dir_default;
               $("#txt_img_dir").attr("placeholder", img_dir);
               $("#txt_img_dir").attr("size", Math.min(30, img_dir.length));
               $("#txt_img_dir").val("");
