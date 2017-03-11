@@ -1,4 +1,4 @@
-# EOF_Showcase 
+# EOF_Book
 
 ## How to use
 1. Clone it on local machine, then open ```index.htm```. No local server needed.
