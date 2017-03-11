@@ -18,17 +18,41 @@ body{
 #showcase{
   display: none;
   position: fixed;
-  z-index:9;
+  z-index: 99;
   top: 0;
   right: 0;
-  width: 60vmin;
+  width: 90%;
   max-width: 320px;
-  color: #ccc;
-  background:#313131;
+  height: 100%;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+  background: #313131;
+  font: 12px/1 Verdana, "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, Arial, Helvetica, sans-serif;
 }
-#showcase.人{background:#000031;}
-#showcase.神{background:#003100;}
-#showcase.魔{background:#310000;}
+
+#showcase.人{background: #000031;}
+#showcase.神{background: #003100;}
+#showcase.魔{background: #310000;}
+#showcase.人 #card_element{color: #6496ea;}
+#showcase.神 #card_element{color: #96ea64;}
+#showcase.魔 #card_element{color: #ea6496;}
+
+#showcase .img_holder{font-size: 0; line-height: 0;}
+#showcase .img_holder img{width: 100%;}
+#showcase .sep{height: 8px; font-size: 0; line-height:0;}
+#showcase .txt_hilight{color: #FFBF00;}
+#showcase .gradient_line5{
+	background:
+		-webkit-gradient(
+			linear,left top,right top,
+			from(rgba(80,70,50,1)),
+			color-stop(0.2,rgba(200,180,140,1)),
+			color-stop(0.8,rgba(200,180,140,1)),
+			to(rgba(80,70,50,1)));
+	height:2px;
+	width: 100%;
+}
 
 #card_img{
   width: 100%;
@@ -36,7 +60,7 @@ body{
 }
 #card_desc{
   width: 100%;
-  font-size: 11pt;
+  text-align: left;
 }
 
 /* Grid */

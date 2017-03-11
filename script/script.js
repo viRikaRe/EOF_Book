@@ -212,9 +212,22 @@ function addListeners() {
 }
 
 function showCase(recid) {
-  $("#card_img").attr("src", img_dir + "/" + data[recid][img_name_style.path][img_name_style.style] + ".jpg");
-  $("#card_desc").text(data[recid]["card_data"]["desc"]);
   $("#showcase").addClass(data[recid]["card_data"]["element_name"]);
+  $("#card_element").text(data[recid]["card_data"]["element_name"]);
+  $("#card_name").text(data[recid]["card_data"]["name"] + " (" + data[recid]["card_data"]["rarity_name"] + ")");
+  $("#card_img").attr("src", img_dir + "/" + data[recid][img_name_style.path][img_name_style.style] + ".jpg");
+  $("#card_attack").text(data[recid]["card_data"]["attack"]);
+  $("#card_defence").text(data[recid]["card_data"]["defence"]);
+  $("#card_cost").text(data[recid]["card_data"]["cost"]);
+  if (data[recid]["card_data"]["skill_name"] !== null) {
+    $("#card_skill").text(data[recid]["card_data"]["skill_name"]);
+    $("#card_skill_desc").text(data[recid]["card_data"]["skill_desc"]);
+    $("#skill_holder").css("display", "block");
+  } else {
+    $("#skill_holder").css("display", "none");
+  }
+
+  $("#card_desc").text(data[recid]["card_data"]["desc"]);
   $("#showcase").css("display", "block");
   case_shown = true;
 }
@@ -222,7 +235,14 @@ function showCase(recid) {
 function hideCase() {
   $("#showcase").css("display", "none");
   $("#showcase").removeClass("人"); $("#showcase").removeClass("神"); $("#showcase").removeClass("魔");
+  $("#card_element").text("");
   $("#card_img").attr("src", null);
+  $("#card_attack").text("");
+  $("#card_defence").text("");
+  $("#card_cost").text("");
+  $("#skill_holder").css("display", "none");
+  $("#card_skill").text("");
+  $("#card_skill_desc").text("");
   $("#card_desc").text("");
   case_shown = false;
 }
