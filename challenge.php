@@ -1,11 +1,31 @@
 <?php
-if ($_POST["answered"]==true)
-  if ($_POST["a1"]==2 && $_POST["a2"]==4 && $_POST["a3"]==1) {
+$qbank = json_decode(file_get_contents('qbank.json'),true);
+
+if ($_POST["answered"]==true) {
+  $score = 0;
+  foreach($_POST as $key => $value) {
+    if (strpos($key, 'qid_') === 0) {
+      $qid=substr($key, 4);
+      if ($value == $qbank[$qid]["choice"][0])
+        $score += 1;
+    }
+  }
+  if ($score >=3) {
     setcookie("fan_token", "-1", time()+604800, "/", $_SERVER['HTTP_HOST'], true, true);
     header("Location: index.php");
   } else {
-    echo("回答错误！");
+    echo('<font color="red">回答错误！</font>');
   }
+}
+
+$paper = array_fill();
+$i = 0;
+foreach ($qbank as $qid=>$rec) {
+  shuffle($rec["choice"]);
+  $paper[$i] = array("qid"=>$qid, "q"=>$rec["question"], "c"=>$rec["choice"]);
+  $i++;
+}
+shuffle($paper);
 ?>
 
 <!DOCTYPE html>
@@ -21,31 +41,19 @@ if ($_POST["answered"]==true)
 <form action="challenge.php" method="post">
     <input type="hidden" name="answered" value="true">
 
-    <span class="quesiton">以下谁おぱい最贫？</span>
-    <fieldset id="a1">
-        <input type="radio" value="1" name="a1">ユリッカ
-        <input type="radio" value="2" name="a1">サリエル
-        <input type="radio" value="3" name="a1">エンマ
-        <input type="radio" value="4" name="a1">キール
+    <?php for ($i = 0; $i < 3; $i++): ?>
+      <?php $p=$paper[$i]; ?>
+    <span class="quesiton"><?php echo($p["q"]); ?></span>
+    <fieldset id="qid_<?php echo($p["qid"]) ?>">
+        <input type="radio" value="<?php echo($p["c"][0]) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($p["c"][0]) ?>
+        <input type="radio" value="<?php echo($p["c"][1]) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($p["c"][1]) ?>
+        <input type="radio" value="<?php echo($p["c"][2]) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($p["c"][2]) ?>
+        <input type="radio" value="<?php echo($p["c"][3]) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($p["c"][3]) ?>
     </fieldset>
-
-    <span class="quesiton">カノン的人偶原型是谁？</span>
-    <fieldset id="a2">
-        <input type="radio" value="1" name="a2">クリリア
-        <input type="radio" value="2" name="a2">ミント
-        <input type="radio" value="3" name="a2">ミュール
-        <input type="radio" value="4" name="a2">ムース
-    </fieldset>
-
-    <span class="quesiton">“＊＊の叡智”是谁的技能？</span>
-    <fieldset id="a3">
-        <input type="radio" value="1" name="a3">クレア
-        <input type="radio" value="2" name="a3">カノン
-        <input type="radio" value="3" name="a3">フィーネム
-        <input type="radio" value="4" name="a3">アストルフォ
-    </fieldset>
+    <?php endfor; ?>
 
     <input type="submit" value="Submit">
 </form>
+
 </body>
 </html>
