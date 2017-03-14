@@ -14,7 +14,7 @@ if ($_POST["answered"]==true) {
     setcookie("fan_token", "-1", time()+604800, "/", $_SERVER['HTTP_HOST'], true, true);
     header("Location: index.php");
   } else {
-    echo('<font color="red">回答错误！</font>');
+    echo('<script>alert("違います！\r\nもう一度やり直してください。");</script>');
   }
 }
 
@@ -29,14 +29,14 @@ shuffle($paper);
 ?>
 
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>Questionnaire</title>
 </head>
 <body>
 
-<h1>请答题后继续</h1>
+<h1>続行するには、以下の質問に答えてください。</h1>
 
 <form action="challenge.php" method="post">
     <input type="hidden" name="answered" value="true">
@@ -45,10 +45,9 @@ shuffle($paper);
       <?php $p=$paper[$i]; ?>
     <span class="quesiton"><?php echo($p["q"]); ?></span>
     <fieldset id="qid_<?php echo($p["qid"]) ?>">
-        <input type="radio" value="<?php echo($p["c"][0]) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($p["c"][0]) ?>
-        <input type="radio" value="<?php echo($p["c"][1]) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($p["c"][1]) ?>
-        <input type="radio" value="<?php echo($p["c"][2]) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($p["c"][2]) ?>
-        <input type="radio" value="<?php echo($p["c"][3]) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($p["c"][3]) ?>
+      <?php foreach ($p["c"] as $c): ?>
+        <input type="radio" value="<?php echo($c) ?>" name="qid_<?php echo($p["qid"]) ?>"><?php echo($c) ?>
+      <?php endforeach; ?>
     </fieldset>
     <?php endfor; ?>
 
