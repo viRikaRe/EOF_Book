@@ -32,7 +32,7 @@ shuffle($paper);
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Questionnaire</title>
+    <title>アンケート</title>
 </head>
 <body>
 
@@ -51,7 +51,7 @@ shuffle($paper);
     </fieldset>
     <?php endfor; ?>
 
-    <input type="submit" value="Submit">
+    <input type="submit" value="送信する">
 </form>
 
 </body>
