@@ -1,0 +1,42 @@
+body {
+  font-size: 9pt;
+}
+h1 {
+  color: #0f2f6f;
+}
+.question {
+  display: block;
+  box-sizing: border-box;
+  width: 400px;
+  margin-top: 12px;
+  padding: 6px;
+  border-radius: 3px 12px 0 0;
+  background-color: #efcfcf;
+  font: bold 10pt serif;
+}
+fieldset {
+  box-sizing: border-box;
+  width: 400px;
+  margin: 0;
+  padding: 6px;
+  border: none;
+  border-radius: 0 0 3px 12px;
+  background-color: #efefbf;
+}
+.choice {
+  display: inline-block;
+  width: 64px;
+}
+input[type=submit] {
+  margin-top: 12px;
+  padding: 6px;
+  border: none;
+  border-radius: 2px 8px;
+  color: #ffffff;
+  background-color: #3498db;
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+}
+input[type=submit]:hover {
+  background-color: #3cb0fd;
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+}
