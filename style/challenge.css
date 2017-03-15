@@ -16,7 +16,7 @@ h1 {
   margin-top: 24px;
   padding: 12px 12px 6px;
   border-radius: 3px 12px 0 0;
-  background-color: #efcfcf;
+  background-color: #efafaf;
   text-align: left;
   font: bold 10pt serif;
 }
@@ -24,19 +24,24 @@ fieldset {
   box-sizing: border-box;
   width: 100%;
   margin: 0;
-  padding: 9px 12px;
+  padding: 3px 12px;
   border: none;
   border-radius: 0 0 3px 12px;
-  background-color: #efefbf;
+  background-color: #efef8f;
   text-align: left;
 }
 .choice {
   display: inline-block;
   width: 24%;
+  border-radius: 6px;
 }
-.choice label{
+.choice:hover {
+  background-color: rgba(255,255,255,0.5);
+}
+.choice label {
   display: inline-block;
   width: 78%;
+  padding: 9px 0 6px;
 }
 input[type=submit] {
   margin-top: 24px;
