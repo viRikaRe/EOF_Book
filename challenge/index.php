@@ -1,4 +1,8 @@
 <?php
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 $qbank = json_decode(file_get_contents('qbank.json'),true);
 
 if ($_POST["answered"]==true) {
@@ -36,11 +40,11 @@ shuffle($paper);
     <link rel="stylesheet" href="../style/challenge.css">
     <title>アンケート</title>
 </head>
-<body>
+<body><div id="wrapper">
 
 <h1>続行するには、以下の質問に答えてください。</h1>
 
-<form action="index.php" method="post">
+<form action="./" method="post">
     <input type="hidden" name="answered" value="true">
 
     <?php for ($i = 0; $i < 3; $i++): ?>
@@ -48,8 +52,10 @@ shuffle($paper);
     <span class="question"><?php echo($p["q"]); ?></span>
     <fieldset id="qid_<?php echo($p["qid"]) ?>">
       <?php foreach ($p["c"] as $c): ?>
-        <input id="<?php echo('q'.$p["qid"].'c'.$c) ?>" type="radio" value="<?php echo($c) ?>" name="qid_<?php echo($p["qid"]) ?>">
-        <label class="choice" for="<?php echo('q'.$p["qid"].'c'.$c) ?>"><?php echo($c) ?></label>
+        <div class="choice">
+            <input id="<?php echo('q'.$p["qid"].'c'.$c) ?>" type="radio" value="<?php echo($c) ?>" name="qid_<?php echo($p["qid"]) ?>">
+            <label for="<?php echo('q'.$p["qid"].'c'.$c) ?>"><?php echo($c) ?></label>
+        </div>
       <?php endforeach; ?>
     </fieldset>
     <?php endfor; ?>
@@ -57,5 +63,5 @@ shuffle($paper);
     <input type="submit" value="送信する">
 </form>
 
-</body>
+</div></body>
 </html>
