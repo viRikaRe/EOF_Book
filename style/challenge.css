@@ -1,5 +1,10 @@
 body {
+  text-align: center;
   font-size: 9pt;
+}
+#wrapper {
+  width: 540px;
+  margin: auto;
 }
 h1 {
   color: #0f2f6f;
@@ -7,34 +12,46 @@ h1 {
 .question {
   display: block;
   box-sizing: border-box;
-  width: 400px;
-  margin-top: 12px;
-  padding: 6px;
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px 12px 6px;
   border-radius: 3px 12px 0 0;
-  background-color: #efcfcf;
+  background-color: #efafaf;
+  text-align: left;
   font: bold 10pt serif;
 }
 fieldset {
   box-sizing: border-box;
-  width: 400px;
+  width: 100%;
   margin: 0;
-  padding: 6px;
+  padding: 3px 12px;
   border: none;
   border-radius: 0 0 3px 12px;
-  background-color: #efefbf;
+  background-color: #efef8f;
+  text-align: left;
 }
 .choice {
   display: inline-block;
-  width: 64px;
+  width: 24%;
+  border-radius: 6px;
+}
+.choice:hover {
+  background-color: rgba(255,255,255,0.5);
+}
+.choice label {
+  display: inline-block;
+  width: 78%;
+  padding: 9px 0 6px;
 }
 input[type=submit] {
-  margin-top: 12px;
-  padding: 6px;
+  margin-top: 24px;
+  padding: 6px 12px;
   border: none;
   border-radius: 2px 8px;
   color: #ffffff;
   background-color: #3498db;
   background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  font-size: 12pt;
 }
 input[type=submit]:hover {
   background-color: #3cb0fd;
