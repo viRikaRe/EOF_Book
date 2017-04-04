@@ -3,6 +3,42 @@
 
 const grid_data = [];
 const charas = [];
+const skill_objs = {
+  "1": "人属性",
+  "2": "神属性",
+  "3": "魔属性",
+  "4": "全属性",
+  "5": "自分",
+  "6": "神属性・人属性",
+  "7": "人属性・魔属性",
+  "8": "魔属性・神属性",
+  "9": "【自デッキ】人属性の枚数に応じて人属性",
+  "a": "【自デッキ】神属性の枚数に応じて神属性",
+  "b": "【自デッキ】魔属性の枚数に応じて魔属性",
+  "f": "【自デッキ】人属性の枚数に応じて全属性",
+  "g": "【自デッキ】神属性の枚数に応じて全属性",
+  "h": "【自デッキ】魔属性の枚数に応じて全属性"
+};
+const skill_effs = {
+  "1": "攻アップ",
+  "2": "防アップ",
+  "3": "攻/防アップ",
+  "4": "攻ダウン",
+  "5": "防ダウン",
+  "6": "攻/防ダウン"
+};
+const skill_degs = {
+  "1": "小",
+  "2": "中",
+  "3": "大",
+  "4": "特大",
+  "5": "極大",
+  "6": "超絶",
+  "7": "究極"
+};
+let skill_objs_arr = $.map(skill_objs, function (v, k) { return v; });
+let skill_effs_arr = $.map(skill_effs, function (v, k) { return v; });
+let skill_degs_arr = $.map(skill_degs, function (v, k) { return v; });
 
 const img_dir_default = "img/card";
 let img_dir = img_dir_default;
@@ -27,6 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
   w2ui["grid"].sortData.push({ field: "card_no", direction: "asc" });
   w2ui["grid"].localSort();
   w2ui["grid"].getSearch("chara").options.items = charas;
+  w2ui["grid"].getSearch("skill_obj").options.items = skill_objs_arr;
+  w2ui["grid"].getSearch("skill_eff").options.items = skill_effs_arr;
+  w2ui["grid"].getSearch("skill_deg").options.items = skill_degs_arr;
   w2ui["grid"].refresh();
   addListeners();
   w2ui["grid"].unlock();
@@ -47,10 +86,21 @@ function initData() {
     record.defence = data[i]["card_data"]["defence"];
     record.defence_max = data[i]["card_data"]["defence_max"];
     record.cost = data[i]["card_data"]["cost"];
+    record.skill_id = data[i]["card_data"]["skill_id"]; //hidden
     record.skill_name = data[i]["card_data"]["skill_name"];
     record.skill_desc = data[i]["card_data"]["skill_desc"];
     record.real_order = data[i]["x_card_data"]["real_order"]; //hidden
     record.chara = data[i]["x_card_data"]["chara"]; //hidden
+    if (record.skill_id !== null) {
+      record.skill_obj = skill_objs[record.skill_id.charAt(0)]; //hidden
+      record.skill_eff = skill_effs[record.skill_id.charAt(1)]; //hidden
+      record.skill_deg = skill_degs[record.skill_id.charAt(2)]; //hidden
+    } else {
+      record.skill_obj = null;
+      record.skill_eff = null;
+      record.skill_deg = null;
+    }
+
     grid_data.push(record);
   }
 
@@ -154,7 +204,7 @@ function initGrid() {
       { field: "defence_max", caption: "防最", size: "4%", min: 40, sortable: true, resizable: true },
       { field: "cost", caption: "戦力", size: "3%", min: 30, sortable: true, resizable: true },
       { field: "skill_name", caption: "技能", size: "21%", min: 210, sortable: true, resizable: true },
-      { field: "skill_desc", caption: "効果", size: "27%", min: 270, sortable: true, resizable: true },
+      { field: "skill_desc", caption: "効果", size: "27%", min: 270, sortable: true, resizable: true }
     ],
     searches: [
       { field: "card_no", caption: "番号", type: "int" },
@@ -173,7 +223,9 @@ function initGrid() {
       { field: "defence_max", caption: "防最", type: "int" },
       { field: "cost", caption: "戦力", type: "int" },
       { field: "skill_name", caption: "技能", type: "text" },
-      { field: "skill_desc", caption: "効果", type: "text" },
+      { field: "skill_obj", caption: "技能対象", type: "list", options: { items: [/* to fill */] } },
+      { field: "skill_eff", caption: "技能効果", type: "list", options: { items: [/* to fill */] } },
+      { field: "skill_deg", caption: "技能程度", type: "list", options: { items: [/* to fill */] } },
       { field: "chara", caption: "角色", type: "list", options: { items: [/* to fill */] } }
     ],
     sortData: [/* to fill */],
