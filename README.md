@@ -8,6 +8,7 @@
 ## Caution
 This project is designed to be opened from local PC -- NO security method is implemented. So do NOT run it on public server.
 
-## This project utilizes... 
-* [W2UI](https://github.com/vitmalina/w2ui)
-* [FontAwesome](https://github.com/FortAwesome/Font-Awesome)
+## This project utilizes...
+* [jQuery](https://jquery.com/) ([GitHub🔗](https://github.com/jquery/jquery))
+* [w2ui](http://w2ui.com/web/) ([GitHub🔗](https://github.com/vitmalina/w2ui))
+* [Font Awesome](http://fontawesome.io/) ([GitHub🔗](https://github.com/FortAwesome/Font-Awesome))
