@@ -14,8 +14,8 @@ body{
   height: 100%;
 }
 
-/*** Showcase ***/
-#showcase{
+/*** Leaf ***/
+#leaf{
   display: none;
   position: fixed;
   z-index: 99;
@@ -31,18 +31,18 @@ body{
   font: 12px/1 Verdana, "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, Arial, Helvetica, sans-serif;
 }
 
-#showcase.人{background: #000031;}
-#showcase.神{background: #003100;}
-#showcase.魔{background: #310000;}
-#showcase.人 #card_element{color: #6496ea;}
-#showcase.神 #card_element{color: #96ea64;}
-#showcase.魔 #card_element{color: #ea6496;}
+#leaf.人{background: #000031;}
+#leaf.神{background: #003100;}
+#leaf.魔{background: #310000;}
+#leaf.人 #card_element{color: #6496ea;}
+#leaf.神 #card_element{color: #96ea64;}
+#leaf.魔 #card_element{color: #ea6496;}
 
-#showcase .img_holder{font-size: 0; line-height: 0;}
-#showcase .img_holder img{width: 100%;}
-#showcase .sep{height: 8px; font-size: 0; line-height:0;}
-#showcase .txt_hilight{color: #FFBF00;}
-#showcase .gradient_line5{
+#leaf .img_holder{font-size: 0; line-height: 0;}
+#leaf .img_holder img{width: 100%;}
+#leaf .sep{height: 8px; font-size: 0; line-height:0;}
+#leaf .txt_hilight{color: #FFBF00;}
+#leaf .gradient_line5{
 	background:
 		-webkit-gradient(
 			linear,left top,right top,

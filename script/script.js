@@ -3,7 +3,7 @@
 
 const grid_data = [];
 const charas = [];
-const skill_objs = {
+const skill_targets = {
   "1": "人属性",
   "2": "神属性",
   "3": "魔属性",
@@ -19,7 +19,7 @@ const skill_objs = {
   "g": "【自デッキ】神属性の枚数に応じて全属性",
   "h": "【自デッキ】魔属性の枚数に応じて全属性"
 };
-const skill_effs = {
+const skill_effects = {
   "1": "攻アップ",
   "2": "防アップ",
   "3": "攻/防アップ",
@@ -27,7 +27,7 @@ const skill_effs = {
   "5": "防ダウン",
   "6": "攻/防ダウン"
 };
-const skill_degs = {
+const skill_degrees = {
   "1": "小",
   "2": "中",
   "3": "大",
@@ -36,16 +36,13 @@ const skill_degs = {
   "6": "超絶",
   "7": "究極"
 };
-let skill_objs_arr = $.map(skill_objs, function (v, k) { return v; });
-let skill_effs_arr = $.map(skill_effs, function (v, k) { return v; });
-let skill_degs_arr = $.map(skill_degs, function (v, k) { return v; });
 
 const img_dir_default = "img/card";
 let img_dir = img_dir_default;
 const img_name_style = { path: "x_card_data", style: "img_file_name_no_ext" }; //or you can change to {path:"card_data",style:"name"}
+const pref_show_leaf = false;   //boolean - whether to show pic by default
 
-let pref_show_case = true;      //boolean - whether "Show pic" button is selected
-let case_shown = false;         //boolean - whether pic is shown
+let leaf_shown = false;         //boolean - whether pic is shown
 let saved_sel = -1;             //integer - remembers selected row before searching, so as to keep it selected after searching
 let saved_search_data = {};     //object - remembers search settings before customized searching, so as to keep restore it afterwards
 let saved_search_logic = "";    //string - remembers search logic  before customized searching, so as to keep restore it afterwards
@@ -63,58 +60,18 @@ document.addEventListener("DOMContentLoaded", function () {
   w2ui["grid"].sortData.push({ field: "card_no", direction: "asc" });
   w2ui["grid"].localSort();
   w2ui["grid"].getSearch("chara").options.items = charas;
-  w2ui["grid"].getSearch("skill_obj").options.items = skill_objs_arr;
-  w2ui["grid"].getSearch("skill_eff").options.items = skill_effs_arr;
-  w2ui["grid"].getSearch("skill_deg").options.items = skill_degs_arr;
+  w2ui["grid"].getSearch("skill_tgt").options.items = $.map(skill_targets, (v, k) => v);
+  w2ui["grid"].getSearch("skill_eff").options.items = $.map(skill_effects, (v, k) => v);
+  w2ui["grid"].getSearch("skill_deg").options.items = $.map(skill_degrees, (v, k) => v);
   w2ui["grid"].refresh();
   addListeners();
   w2ui["grid"].unlock();
 });
 
-
-function initData() {
-  //init data for grid
-  for (let i = 0; i < data.length; i++) {
-    const record = {};
-    record.recid = i;
-    record.card_no = data[i]["x_card_data"]["raw_order_int"];
-    record.name = data[i]["card_data"]["name"];
-    record.element_name = data[i]["card_data"]["element_name"];
-    record.rarity_name_short = data[i]["card_data"]["rarity_name_short"];
-    record.attack = data[i]["card_data"]["attack"];
-    record.attack_max = data[i]["card_data"]["attack_max"];
-    record.defence = data[i]["card_data"]["defence"];
-    record.defence_max = data[i]["card_data"]["defence_max"];
-    record.cost = data[i]["card_data"]["cost"];
-    record.skill_id = data[i]["card_data"]["skill_id"]; //hidden
-    record.skill_name = data[i]["card_data"]["skill_name"];
-    record.skill_desc = data[i]["card_data"]["skill_desc"];
-    record.real_order = data[i]["x_card_data"]["real_order"]; //hidden
-    record.chara = data[i]["x_card_data"]["chara"]; //hidden
-    if (record.skill_id !== null) {
-      record.skill_obj = skill_objs[record.skill_id.charAt(0)]; //hidden
-      record.skill_eff = skill_effs[record.skill_id.charAt(1)]; //hidden
-      record.skill_deg = skill_degs[record.skill_id.charAt(2)]; //hidden
-    } else {
-      record.skill_obj = null;
-      record.skill_eff = null;
-      record.skill_deg = null;
-    }
-
-    grid_data.push(record);
-  }
-
-  //init data for charas search
-  $.each(data, function (i, v) {
-    if ($.inArray(v["x_card_data"]["chara"], charas) === -1) charas.push(v["x_card_data"]["chara"]);
-  });
-  charas.sort(function (a, b) { return a.localeCompare(b); });
-}
-
 function initGrid() {
   $("#grid").w2grid({
     name: "grid",
-    header: "List of Names",
+    header: "『ファルキューレの紋章』図鑑",
     show: {
       toolbar: true,
       footer: true
@@ -122,13 +79,13 @@ function initGrid() {
     toolbar: {
       items: [
         { type: "break" },
-        { type: "check", id: "chk_show_case", caption: "Show pic", icon: "fa fa-toggle-on", checked: true },
+        { type: "check", id: "chk_show_leaf", caption: "Show pic", icon: pref_show_leaf ? "fa fa-toggle-on" : "fa fa-toggle-off", checked: pref_show_leaf },
         {
           type: "html",
           html: "<div class=\"w2ui-toolbar-custom-imgdir\">" +
-          "<span class=\"textbox-icon fa fa-folder-open-o fa-fw\"></span>" +
-          "<input id=\"txt_img_dir\" type=\"text\" title=\"Set image directory\" size=\"9\" placeholder=\"" + img_dir + "\"/>" +
-          "<span class=\"textbox-suffix\">/</span></div>"
+            "<span class=\"textbox-icon fa fa-folder-open-o fa-fw\"></span>" +
+            "<input id=\"txt_img_dir\" type=\"text\" title=\"Set image directory\" size=\"9\" placeholder=\"" + img_dir + "\"/>" +
+            "<span class=\"textbox-suffix\">/</span></div>"
         },
         { type: "button", id: "btn_img_dir", caption: "Set" },
         { type: "break" },
@@ -138,15 +95,16 @@ function initGrid() {
       onClick: function (event) {
         event.onComplete = function () {
           switch (event.target) {
-            case "chk_show_case":   //"Show pic" button is clicked
-              if (this.get("chk_show_case").checked) {
-                this.set("chk_show_case", { icon: "fa fa-toggle-on" });
-                pref_show_case = true;
-                if (w2ui["grid"].getSelection().length > 0) showCase(w2ui["grid"].getSelection()[0]);
+            case "chk_show_leaf":   //"Show pic" button is clicked
+              if (this.get("chk_show_leaf").checked) {
+                this.set("chk_show_leaf", { icon: "fa fa-toggle-on" });
+                // pref_show_leaf = true;
+                if (w2ui["grid"].getSelection().length > 0)
+                  showLeaf(w2ui["grid"].getSelection()[0]);
               } else {
-                this.set("chk_show_case", { icon: "fa fa-toggle-off" });
-                pref_show_case = false;
-                hideCase();
+                this.set("chk_show_leaf", { icon: "fa fa-toggle-off" });
+                // pref_show_leaf = false;
+                hideLeaf();
               }
               break;
 
@@ -180,7 +138,10 @@ function initGrid() {
                 this.set("chk_show_promo", { icon: "fa fa-toggle-off" });
                 //Reset search
                 mask_custom_search = true;
-                if (saved_search_data.length !== 0) { w2ui["grid"].search(saved_search_data, saved_search_logic); } else { w2ui["grid"].searchReset(); }
+                if (saved_search_data.length !== 0)
+                  w2ui["grid"].search(saved_search_data, saved_search_logic);
+                else
+                  w2ui["grid"].searchReset();
                 mask_custom_search = false;
                 //Recover status
                 if (saved_sel >= 0) {
@@ -223,7 +184,7 @@ function initGrid() {
       { field: "defence_max", caption: "防最", type: "int" },
       { field: "cost", caption: "戦力", type: "int" },
       { field: "skill_name", caption: "技能", type: "text" },
-      { field: "skill_obj", caption: "技能対象", type: "list", options: { items: [/* to fill */] } },
+      { field: "skill_tgt", caption: "技能対象", type: "list", options: { items: [/* to fill */] } },
       { field: "skill_eff", caption: "技能効果", type: "list", options: { items: [/* to fill */] } },
       { field: "skill_deg", caption: "技能程度", type: "list", options: { items: [/* to fill */] } },
       { field: "chara", caption: "角色", type: "list", options: { items: [/* to fill */] } }
@@ -231,40 +192,83 @@ function initGrid() {
     sortData: [/* to fill */],
     records: [/* to fill */],
     onSelect: function (event) {
-      if (pref_show_case) showCase(event.recid);
+      if (this.toolbar.get("chk_show_leaf").checked)
+        showLeaf(event.recid);
       event.onComplete = function () {
-        saved_sel = w2ui["grid"].getSelection()[0];
-        if (!w2ui["grid"].toolbar.get("chk_show_promo").checked) w2ui["grid"].toolbar.enable("chk_show_promo");
+        saved_sel = this.getSelection()[0];
+        if (!this.toolbar.get("chk_show_promo").checked)
+          this.toolbar.enable("chk_show_promo");
       };
     },
     onUnselect: function (event) {
-      hideCase();
+      hideLeaf();
       event.onComplete = function () {
         saved_sel = -1;
-        if (!w2ui["grid"].toolbar.get("chk_show_promo").checked) w2ui["grid"].toolbar.disable("chk_show_promo");
+        if (!this.toolbar.get("chk_show_promo").checked)
+          this.toolbar.disable("chk_show_promo");
       };
     },
     onSearch: function (event) {
       event.onComplete = function () {
         if (!mask_custom_search) {
-          w2ui["grid"].toolbar.disable("chk_show_promo");
-          w2ui["grid"].toolbar.uncheck("chk_show_promo");
-          w2ui["grid"].toolbar.set("chk_show_promo", { icon: "fa fa-toggle-off" });
-          w2ui["grid"].selectNone();
+          this.toolbar.disable("chk_show_promo");
+          this.toolbar.uncheck("chk_show_promo");
+          this.toolbar.set("chk_show_promo", { icon: "fa fa-toggle-off" });
+          this.selectNone();
         }
       };
     }
   });
 }
 
+function initData() {
+  //initiate data for grid
+  for (let i = 0; i < data.length; i++) {
+    const record = {};
+    record.recid = i;
+    record.card_no = data[i]["x_card_data"]["raw_order_int"];
+    record.name = data[i]["card_data"]["name"];
+    record.element_name = data[i]["card_data"]["element_name"];
+    record.rarity_name_short = data[i]["card_data"]["rarity_name_short"];
+    record.attack = data[i]["card_data"]["attack"];
+    record.attack_max = data[i]["card_data"]["attack_max"];
+    record.defence = data[i]["card_data"]["defence"];
+    record.defence_max = data[i]["card_data"]["defence_max"];
+    record.cost = data[i]["card_data"]["cost"];
+    record.skill_id = data[i]["card_data"]["skill_id"]; //hidden
+    record.skill_name = data[i]["card_data"]["skill_name"];
+    record.skill_desc = data[i]["card_data"]["skill_desc"];
+    record.real_order = data[i]["x_card_data"]["real_order"]; //hidden
+    record.chara = data[i]["x_card_data"]["chara"]; //hidden
+    if (record.skill_id !== null) {
+      record.skill_tgt = skill_targets[record.skill_id.charAt(0)]; //hidden
+      record.skill_eff = skill_effects[record.skill_id.charAt(1)]; //hidden
+      record.skill_deg = skill_degrees[record.skill_id.charAt(2)]; //hidden
+    } else {
+      record.skill_tgt = null;
+      record.skill_eff = null;
+      record.skill_deg = null;
+    }
+    grid_data.push(record);
+  }
+
+  //initiate data for charas search
+  $.each(data, function (i, v) {
+    if ($.inArray(v["x_card_data"]["chara"], charas) === -1)
+      charas.push(v["x_card_data"]["chara"]);
+  });
+  charas.sort((a, b) => a.localeCompare(b));
+}
+
 function addListeners() {
   $("#txt_img_dir").keypress(function (event) {
-    if (event.which === 13) { w2ui["grid"].toolbar.click("btn_img_dir"); }
+    if (event.which === 13)
+      w2ui["grid"].toolbar.click("btn_img_dir");
   });
 }
 
-function showCase(recid) {
-  $("#showcase").addClass(data[recid]["card_data"]["element_name"]);
+function showLeaf(recid) {
+  $("#leaf").addClass(data[recid]["card_data"]["element_name"]);
   $("#card_element").text(data[recid]["card_data"]["element_name"]);
   $("#card_name").text(data[recid]["card_data"]["name"] + " (" + data[recid]["card_data"]["rarity_name"] + ")");
   $("#card_img").attr("src", img_dir + "/" + data[recid][img_name_style.path][img_name_style.style] + ".jpg");
@@ -280,13 +284,13 @@ function showCase(recid) {
   }
 
   $("#card_desc").text(data[recid]["card_data"]["desc"]);
-  $("#showcase").css("display", "block");
-  case_shown = true;
+  $("#leaf").css("display", "block");
+  leaf_shown = true;
 }
 
-function hideCase() {
-  $("#showcase").css("display", "none");
-  $("#showcase").removeClass("人"); $("#showcase").removeClass("神"); $("#showcase").removeClass("魔");
+function hideLeaf() {
+  $("#leaf").css("display", "none");
+  $("#leaf").removeClass("人"); $("#leaf").removeClass("神"); $("#leaf").removeClass("魔");
   $("#card_element").text("");
   $("#card_img").attr("src", null);
   $("#card_attack").text("");
@@ -296,5 +300,5 @@ function hideCase() {
   $("#card_skill").text("");
   $("#card_skill_desc").text("");
   $("#card_desc").text("");
-  case_shown = false;
+  leaf_shown = false;
 }
