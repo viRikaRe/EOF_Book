@@ -79,17 +79,17 @@ function initGrid() {
     toolbar: {
       items: [
         { type: "break" },
-        { type: "check", id: "chk_show_leaf", caption: "Show pic", icon: pref_show_leaf ? "fa fa-toggle-on" : "fa fa-toggle-off", checked: pref_show_leaf },
+        { type: "check", id: "chk_show_leaf", caption: "Show pic", icon: pref_show_leaf ? "fa fa-eye" : "fa fa-eye-slash", checked: pref_show_leaf },
         {
           type: "html",
           html: "<div class=\"w2ui-toolbar-custom-imgdir\">" +
-            "<span class=\"textbox-icon fa fa-folder-open-o fa-fw\"></span>" +
+            "<span class=\"textbox-icon fa fa-folder-open\"></span>" +
             "<input id=\"txt_img_dir\" type=\"text\" title=\"Set image directory\" size=\"9\" placeholder=\"" + img_dir + "\"/>" +
             "<span class=\"textbox-suffix\">/</span></div>"
         },
         { type: "button", id: "btn_img_dir", caption: "Set" },
         { type: "break" },
-        { type: "check", id: "chk_show_promo", caption: "Show promotion", icon: "fa fa-toggle-off", checked: false, disabled: true },
+        { type: "check", id: "chk_show_promo", caption: "Show promotion", icon: "fas fa-toggle-off", checked: false, disabled: true },
         { type: "spacer" }
       ],
       onClick: function (event) {
@@ -97,12 +97,12 @@ function initGrid() {
           switch (event.target) {
             case "chk_show_leaf":   //"Show pic" button is clicked
               if (this.get("chk_show_leaf").checked) {
-                this.set("chk_show_leaf", { icon: "fa fa-toggle-on" });
+                this.set("chk_show_leaf", { icon: "fa fa-eye" });
                 // pref_show_leaf = true;
                 if (w2ui["grid"].getSelection().length > 0)
                   showLeaf(w2ui["grid"].getSelection()[0]);
               } else {
-                this.set("chk_show_leaf", { icon: "fa fa-toggle-off" });
+                this.set("chk_show_leaf", { icon: "fa fa-eye-slash" });
                 // pref_show_leaf = false;
                 hideLeaf();
               }
