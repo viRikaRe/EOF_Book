@@ -51,7 +51,7 @@ let mask_custom_search = false; //boolean - a flag indicating whether a search i
 
 //Page load
 initGrid();
-w2ui["grid"].lock("Loading... (~10MB)", true);
+w2ui["grid"].lock("Loading... (~22MB)", true);
 
 //Page init
 document.addEventListener("DOMContentLoaded", function () {
